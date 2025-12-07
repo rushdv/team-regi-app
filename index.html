@@ -10,7 +10,9 @@ tailwind.config = {
   theme: {
     extend: {
       colors: {
-        bg:"#020617",card:"#020817",accent:"#22c55e"
+        bg:"#020617",
+        card:"#020817",
+        accent:"#22c55e"
       }
     }
   }
@@ -20,15 +22,13 @@ tailwind.config = {
 
 <body class="bg-bg min-h-screen flex items-center justify-center px-4 text-slate-100">
 
-<iframe name="hiddenFrame" class="hidden"></iframe>
-
 <div class="w-full max-w-5xl bg-card border border-slate-800 rounded-3xl shadow-2xl p-6 sm:p-10">
 
 <header class="mb-10">
-<h1 class="text-2xl sm:text-3xl font-semibold">Team Registration Portal</h1>
-<p class="text-sm text-slate-400 mt-1">
-One country per team. Unassigned players can join separately.
-</p>
+  <h1 class="text-2xl sm:text-3xl font-semibold">Team Registration Portal</h1>
+  <p class="text-sm text-slate-400 mt-1">
+    One country per team. Unassigned players can join separately.
+  </p>
 </header>
 
 <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-10">
@@ -37,20 +37,25 @@ One country per team. Unassigned players can join separately.
 <section class="space-y-6">
 <h2 class="text-lg font-medium">Register Team</h2>
 
-<form method="GET" target="hiddenFrame"
+<form method="GET"
 action="https://script.google.com/macros/s/AKfycbxlIGmUliXhKvJq46fV_Q3WqBzAUIvXBl5Tw5Gwlnj_mIl0UBrtwtIxLOFgOxlNeFgx/exec"
-onsubmit="teamSubmit()" class="space-y-4">
+class="space-y-4">
 
 <input type="hidden" name="mode" value="team">
 
-<input required name="teamName" placeholder="Team name"
-class="input">
+<input required name="teamName" placeholder="Team name" class="input">
 
 <select required name="country" class="input">
 <option value="">Select country</option>
-<option>Indonesia</option><option>South Korea</option><option>Pakistan</option>
-<option>China</option><option>Vietnam</option><option>Australia</option>
-<option>Japan</option><option>Argentina</option><option>Morocco</option>
+<option>Indonesia</option>
+<option>South Korea</option>
+<option>Pakistan</option>
+<option>China</option>
+<option>Vietnam</option>
+<option>Australia</option>
+<option>Japan</option>
+<option>Argentina</option>
+<option>Morocco</option>
 </select>
 
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -63,7 +68,7 @@ class="input">
 <button class="btn-accent w-full sm:w-auto">Register Team</button>
 </form>
 
-<div id="teamMsg" class="hidden alert success"></div>
+<div id="teamMsg" class="hidden alert"></div>
 </section>
 
 <!-- DIVIDER -->
@@ -76,9 +81,9 @@ class="input">
 <section class="space-y-6">
 <h2 class="text-lg font-medium">Unassigned</h2>
 
-<form method="GET" target="hiddenFrame"
+<form method="GET"
 action="https://script.google.com/macros/s/AKfycbxlIGmUliXhKvJq46fV_Q3WqBzAUIvXBl5Tw5Gwlnj_mIl0UBrtwtIxLOFgOxlNeFgx/exec"
-onsubmit="unSubmit()" class="space-y-4">
+class="space-y-4">
 
 <input type="hidden" name="mode" value="unassigned">
 
@@ -87,69 +92,72 @@ onsubmit="unSubmit()" class="space-y-4">
 <button class="btn-dark w-full sm:w-auto">Join Unassigned</button>
 </form>
 
-<div id="unMsg" class="hidden alert success"></div>
+<div id="unMsg" class="hidden alert"></div>
 </section>
 
 </div>
 </div>
 
 <script>
-const params = new URLSearchParams(window.location.search);
-const status = params.get("status");
+const status=new URLSearchParams(location.search).get("status");
+let box,msg;
 
-if(status){
-  let msg="", box;
+if(status==="success"){
+  box=document.getElementById("teamMsg");
+  msg="✅ Team registered successfully.";
+}
+if(status==="taken"){
+  box=document.getElementById("teamMsg");
+  msg="⚠️ Country already taken.";
+}
+if(status==="unassigned"){
+  box=document.getElementById("unMsg");
+  msg="✅ Added to unassigned list.";
+}
+if(status==="error"){
+  box=document.getElementById("teamMsg");
+  msg="❌ Something went wrong.";
+}
 
-  if(status==="success"){
-    box=document.getElementById("teamMsg");
-    msg="✅ Team registered successfully.";
-  }
-
-  if(status==="taken"){
-    box=document.getElementById("teamMsg");
-    msg="⚠️ This country is already taken. Please choose another.";
-  }
-
-  if(status==="unassigned"){
-    box=document.getElementById("unMsg");
-    msg="✅ Added to unassigned list.";
-  }
-
-  if(status==="error"){
-    box=document.getElementById("teamMsg");
-    msg="❌ Something went wrong.";
-  }
-
-  if(box){
-    box.textContent=msg;
-    box.classList.remove("hidden");
-  }
-
+if(box){
+  box.textContent=msg;
+  box.classList.remove("hidden");
   history.replaceState({}, "", location.pathname);
 }
 </script>
 
-
 <style>
 .input{
-width:100%;padding:0.6rem 1rem;border-radius:1rem;
-background:#0f172a;border:1px solid #334155;font-size:14px;
-outline:none;transition:.2s;
+width:100%;
+padding:.6rem 1rem;
+border-radius:1rem;
+background:#0f172a;
+border:1px solid #334155;
+font-size:14px;
+outline:none;
+transition:.2s;
 }
-.input:focus{border-color:#22c55e;box-shadow:0 0 0 2px rgba(34,197,94,.25)}
+.input:focus{
+border-color:#22c55e;
+box-shadow:0 0 0 2px rgba(34,197,94,.25)
+}
 .btn-accent{
-background:#22c55e;color:#020617;border-radius:1rem;
-padding:.6rem 1.5rem;font-weight:500;
+background:#22c55e;
+color:#020617;
+border-radius:1rem;
+padding:.6rem 1.5rem;
+font-weight:500;
 }
 .btn-dark{
-background:#1e293b;border-radius:1rem;
+background:#1e293b;
+border-radius:1rem;
 padding:.6rem 1.5rem;
 }
 .alert{
-margin-top:10px;padding:.6rem 1rem;border-radius:1rem;
+margin-top:10px;
+padding:.6rem 1rem;
+border-radius:1rem;
 font-size:13px;
-}
-.success{
 border:1px solid rgba(34,197,94,.6);
 background:rgba(34,197,94,.15);
 color:#d1fae5;
